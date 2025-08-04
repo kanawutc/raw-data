@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Explorer - {% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table-container { margin-top: 20px; }
+        .btn-group { margin: 10px 0; }
+        .edit-form { display: none; }
+        .navbar-brand { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Database Explorer</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="{{ url_for('domain_cost') }}">Domain Cost</a>
+                <a class="nav-link" href="{{ url_for('hosting_cost') }}">Hosting Cost</a>
+                <a class="nav-link" href="{{ url_for('performance') }}">Performance</a>
+                <a class="nav-link" href="{{ url_for('revenue') }}">Revenue</a>
+                <a class="nav-link" href="{{ url_for('salary') }}">Salary</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleEdit(id) {
+            var viewRow = document.getElementById('view-' + id);
+            var editRow = document.getElementById('edit-' + id);
+            if (viewRow.style.display === 'none') {
+                viewRow.style.display = '';
+                editRow.style.display = 'none';
+            } else {
+                viewRow.style.display = 'none';
+                editRow.style.display = '';
+            }
+        }
+
+        function confirmDelete(url) {
+            if (confirm('Are you sure you want to delete this record?')) {
+                window.location.href = url;
+            }
+        }
+    </script>
+</body>
+</html>

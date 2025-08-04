@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Database Explorer</h1>
+        <p class="lead">Welcome to the Database Explorer. Choose a database to explore and manage your data.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Domain Cost</h5>
+                <p class="card-text">Manage domain registration costs and related information.</p>
+                <a href="{{ url_for('domain_cost') }}" class="btn btn-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Hosting Cost</h5>
+                <p class="card-text">Track hosting expenses and domain hosting details.</p>
+                <a href="{{ url_for('hosting_cost') }}" class="btn btn-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Performance</h5>
+                <p class="card-text">Monitor website performance metrics and analytics.</p>
+                <a href="{{ url_for('performance') }}" class="btn btn-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Revenue</h5>
+                <p class="card-text">Analyze revenue data and financial performance.</p>
+                <a href="{{ url_for('revenue') }}" class="btn btn-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Salary</h5>
+                <p class="card-text">Manage employee salary information and team assignments.</p>
+                <a href="{{ url_for('salary') }}" class="btn btn-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <h6>Instructions:</h6>
+            <ul class="mb-0">
+                <li>Click on any database card to view and manage the data</li>
+                <li>Use the "Add New Record" button to create new entries</li>
+                <li>Click "Edit" to modify existing records</li>
+                <li>Use "Import CSV" to bulk import data from CSV files</li>
+                <li>Click "Delete" to remove records (confirmation required)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

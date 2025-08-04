@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Hosting Cost{% endblock %}
+
+{% block content %}
+<h2>Hosting Cost Management</h2>
+
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">Add New Record</button>
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#importModal">Import CSV</button>
+</div>
+
+<div class="table-responsive table-container">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Registration Month</th>
+                <th>Expiry Month</th>
+                <th>Domain</th>
+                <th>Team</th>
+                <th>Hosting Cost</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr id="view-{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.month_registration }}</td>
+                <td>{{ row.month_expire }}</td>
+                <td>{{ row.domain }}</td>
+                <td>{{ row.team }}</td>
+                <td>${{ "%.2f"|format(row.sum_hosting_cost_by_domain) }}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="toggleEdit({{ row.id }})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{ url_for('delete_record', table_name='hosting_cost', record_id=row.id) }}')">Delete</button>
+                </td>
+            </tr>
+            <tr id="edit-{{ row.id }}" class="edit-form">
+                <form method="POST" action="{{ url_for('edit_record', table_name='hosting_cost', record_id=row.id) }}">
+                    <td>{{ row.id }}</td>
+                    <td><input type="text" class="form-control form-control-sm" name="month_registration" value="{{ row.month_registration }}"></td>
+                    <td><input type="text" class="form-control form-control-sm" name="month_expire" value="{{ row.month_expire }}"></td>
+                    <td><input type="text" class="form-control form-control-sm" name="domain" value="{{ row.domain }}" required></td>
+                    <td><input type="text" class="form-control form-control-sm" name="team" value="{{ row.team }}"></td>
+                    <td><input type="number" step="0.01" class="form-control form-control-sm" name="sum_hosting_cost_by_domain" value="{{ row.sum_hosting_cost_by_domain }}" required></td>
+                    <td>
+                        <button type="submit" class="btn btn-sm btn-success">Save</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="toggleEdit({{ row.id }})">Cancel</button>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Hosting Cost Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('add_record', table_name='hosting_cost') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Registration Month</label>
+                        <input type="text" class="form-control" name="month_registration">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Expiry Month</label>
+                        <input type="text" class="form-control" name="month_expire">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Domain</label>
+                        <input type="text" class="form-control" name="domain" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Team</label>
+                        <input type="text" class="form-control" name="team">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hosting Cost</label>
+                        <input type="number" step="0.01" class="form-control" name="sum_hosting_cost_by_domain" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Import CSV Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('import_csv', table_name='hosting_cost') }}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Select CSV File</label>
+                        <input type="file" class="form-control" name="file" accept=".csv" required>
+                    </div>
+                    <div class="alert alert-info">
+                        <small>CSV should have columns: month_registration, month_expire, domain, team, sum_hosting_cost_by_domain</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
